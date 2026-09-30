@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Listening Lab – Practice English with Songs</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f6f4ef;--card:#fff;--ink:#1f2430;--mute:#6b7280;--line:#e3dfd6;--acc:#3b5bdb;--acc-ink:#fff;--ok:#2b8a3e;--okbg:#e6f4ea;--bad:#c92a2a;--badbg:#fdecec}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15171c;--card:#1e2128;--ink:#ecebe6;--mute:#9aa0ab;--line:#33373f;--acc:#7c93ff;--acc-ink:#10131a;--ok:#6fcf86;--okbg:#1d3326;--bad:#ff8787;--badbg:#3a2022}}
+:root[data-theme="dark"]{--bg:#15171c;--card:#1e2128;--ink:#ecebe6;--mute:#9aa0ab;--line:#33373f;--acc:#7c93ff;--acc-ink:#10131a;--ok:#6fcf86;--okbg:#1d3326;--bad:#ff8787;--badbg:#3a2022}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+.wrap{max-width:1150px;margin:0 auto;padding:20px 16px 40px}
+h1{margin:0;font-size:1.6rem}
+.sub{color:var(--mute);margin:4px 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:18px}
+.card h2{margin:0 0 10px;font-size:1.05rem}
+.form{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+.form .full{grid-column:1/-1}
+@media (max-width:600px){.form{grid-template-columns:1fr}}
+label{display:block;font-size:.85rem;font-weight:600;margin-bottom:3px}
+input,textarea{width:100%;font:inherit;padding:9px 11px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+textarea{min-height:130px;resize:vertical}
+.note{font-size:.85rem;color:var(--mute);margin:6px 0 0}
+.err{color:var(--bad);font-weight:600;min-height:1.3em;margin:8px 0 0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.tab{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 16px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer}
+.tab small{font-weight:400;color:var(--mute);margin-left:6px}
+.tab[aria-selected="true"]{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.tab[aria-selected="true"] small{color:inherit;opacity:.85}
+.grid{display:grid;grid-template-columns:1fr;gap:18px}
+@media (min-width:860px){.grid{grid-template-columns:1.1fr 1fr;align-items:start}.video{position:sticky;top:16px}}
+.grid .card{margin-bottom:0}
+.frame{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000}
+.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.meta h2{margin:14px 0 2px;font-size:1.15rem}
+.meta p{margin:0;color:var(--mute);font-size:.92rem}
+.meta a{color:var(--acc)}
+.hint{font-size:.9rem;color:var(--mute);margin:0 0 12px}
+.line{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:1.05rem}
+.line:last-of-type{border-bottom:0}
+.blank{display:inline-flex;gap:4px;padding:3px;border:1px dashed var(--line);border-radius:10px}
+.opt{font:inherit;font-size:.92rem;padding:4px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--acc)}
+.opt.sel{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.opt.ok{background:var(--okbg);color:var(--ok);border-color:var(--ok);font-weight:700}
+.opt.bad{background:var(--badbg);color:var(--bad);border-color:var(--bad);text-decoration:line-through}
+.opt.right{border-color:var(--ok);color:var(--ok);font-weight:700}
+.opt:disabled{cursor:default}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+.btn{font:inherit;font-weight:600;padding:9px 16px;border-radius:10px;border:1px solid var(--acc);background:var(--acc);color:var(--acc-ink);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.score{font-weight:700}
+.saved{color:var(--mute);font-size:.82rem;margin-top:10px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎧 Listening Lab</h1>
+  <p class="sub">Add a song, then practice listening at three levels by choosing the word you hear in each blank.</p>
+
+  <section class="card">
+    <h2>1. Choose your song</h2>
+    <div class="form">
+      <div class="full"><label for="fUrl">YouTube link</label><input id="fUrl" type="url" placeholder="https://www.youtube.com/watch?v=..."></div>
+      <div><label for="fName">Song name</label><input id="fName" type="text" placeholder="Song title"></div>
+      <div><label for="fArtist">Author / artist</label><input id="fArtist" type="text" placeholder="Artist or author"></div>
+      <div class="full"><label for="fLyr">Lyrics</label><textarea id="fLyr" placeholder="Paste the lyrics here, one line per row."></textarea>
+        <p class="note">Paste the lyrics yourself (from the lyric sheet or a licensed lyrics site). This page can't look them up for you. It turns them into exercises on your device and doesn't send them anywhere.</p></div>
+    </div>
+    <div class="actions"><button class="btn" id="create">Create practice</button><button class="btn ghost" id="example">Try an example</button></div>
+    <p class="err" id="err"></p>
+  </section>
+
+  <div id="practice" hidden>
+    <div class="tabs" id="tabs" role="tablist"></div>
+    <div class="grid">
+      <section class="video card">
+        <div class="frame"><iframe id="player" title="Song video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+        <div class="meta"><h2 id="sTitle"></h2><p id="sNote"></p><p><a id="sLink" target="_blank" rel="noopener">Video not loading? Watch on YouTube ↗</a></p></div>
+      </section>
+      <section class="card">
+        <p class="hint" id="hint"></p>
+        <div id="lyrics"></div>
+        <div class="actions">
+          <button class="btn" id="check"></button>
+          <button class="btn ghost" id="reset">Reset level</button>
+          <span class="score" id="score"></span>
+        </div>
+        <div class="saved">Your song and answers are saved on this device automatically.</div>
+      </section>
+    </div>
+  </div>
+</div>
+<script>
+const KEY="listening-lab-v2";
+let S={song:null,level:"beginner",ans:{},checked:{},draft:{}},cache={};
+try{const r=JSON.parse(localStorage.getItem(KEY)||"null");if(r&&typeof r==="object")S=Object.assign(S,r)}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+const LEVELS={
+  beginner:{label:"Beginner",hint:"Short, simple words in about every second line. The wrong options look quite different.",min:3,max:5,per:1,every:2,near:false},
+  intermediate:{label:"Intermediate",hint:"One blank per line with longer words. Some wrong options look or sound similar.",min:4,max:99,per:1,every:1,near:true},
+  advanced:{label:"Advanced",hint:"Up to two blanks per line, mostly longer words, with very similar wrong options.",min:5,max:99,per:2,every:1,near:true}
+};
+const STOP=new Set("the and you your for are but not with that this have from they will would there their what about which when were been has had his her its our out can all any one just get got into than then them she him was who how why yes now too oh ooh yeah hey let like cause gonna wanna".split(" "));
+const FALL="love time heart night light dream world fire rain home sky day way eyes life hand road river song dance blue gold stone wind sea moon sun star tree door street".split(" ");
+
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function rngf(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function shuf(a,r){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function lev(a,b){const d=Array.from({length:a.length+1},(_,i)=>[i]);for(let j=1;j<=b.length;j++)d[0][j]=j;
+  for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length]}
+const cased=(w,ref)=>ref[0]===ref[0].toUpperCase()&&ref[0]!==ref[0].toLowerCase()?w[0].toUpperCase()+w.slice(1):w;
+
+function build(level){
+  if(cache[level])return cache[level];
+  const c=LEVELS[level],r=rngf(S.song.h+hash(level));
+  const lines=S.song.lyrics.split(/\r?\n/).map(s=>s.trim()).filter(s=>s&&!/^\[.*\]$|^\(.*\)$/.test(s)).slice(0,60);
+  const toks=lines.map(l=>l.split(/([\p{L}']+)/u));
+  const pool=[...new Set(toks.flatMap(t=>t.filter((_,i)=>i%2).map(w=>w.toLowerCase())).filter(w=>w.length>=3))].concat(FALL);
+  let n=0;
+  const out=toks.map((t,li)=>{
+    if(li%c.every)return t;
+    const cand=shuf(t.map((w,i)=>i).filter(i=>i%2&&t[i].length>=c.min&&t[i].length<=c.max&&!STOP.has(t[i].toLowerCase())),r);
+    const picks=[];for(const i of cand){if(picks.every(p=>Math.abs(p-i)>2))picks.push(i);if(picks.length>=c.per)break}
+    if(!picks.length)return t;
+    const res=t.slice();
+    picks.forEach(i=>{
+      const word=t[i],low=word.toLowerCase();
+      let ds=[...new Set(pool)].filter(w=>w!==low);
+      ds=c.near?ds.map(w=>[lev(w,low)+r()*.6,w]).sort((a,b)=>a[0]-b[0]).map(x=>x[1])
+               :shuf(ds.filter(w=>Math.abs(w.length-low.length)<=2&&lev(w,low)>2),r);
+      ds=ds.slice(0,2).map(w=>cased(w,word));
+      res[i]={i:n++,c:word,o:shuf([word,...ds],r)};
+    });
+    return res;
+  });
+  return cache[level]=out;
+}
+const total=l=>build(l).flat().filter(x=>typeof x==="object").length;
+
+function renderTabs(){
+  $("tabs").innerHTML=Object.keys(LEVELS).map(k=>{const a=Object.keys(S.ans[k]||{}).length;
+    return `<button class="tab" role="tab" data-l="${k}" aria-selected="${k===S.level}">${LEVELS[k].label}<small>${a}/${total(k)}</small></button>`}).join("");
+}
+function render(){
+  const L=S.level,A=S.ans[L]||{},done=!!S.checked[L];let right=0;
+  $("hint").textContent=LEVELS[L].hint+" Pause and replay the video as often as you need.";
+  $("lyrics").innerHTML=build(L).map(line=>`<div class="line">`+line.map(p=>{
+    if(typeof p==="string")return esc(p);
+    const sel=A[p.i];if(done&&sel===p.c)right++;
+    return `<span class="blank">`+p.o.map(v=>{let c="opt";
+      if(done){if(v===sel)c+=v===p.c?" ok":" bad";else if(v===p.c)c+=" right"}else if(v===sel)c+=" sel";
+      return `<button class="${c}" data-i="${p.i}" data-v="${esc(v)}" ${done?"disabled":""}>${esc(v)}</button>`}).join("")+`</span>`;
+  }).join("")+`</div>`).join("");
+  $("check").textContent=done?"Try again":"Check answers";
+  $("score").textContent=done?`${right} / ${total(L)} correct`:"";
+  renderTabs();
+}
+function showSong(scroll){
+  if(!S.song){$("practice").hidden=true;return}
+  const s=S.song;$("practice").hidden=false;
+  $("player").src="https://www.youtube.com/embed/"+s.id+"?rel=0";
+  $("sTitle").textContent=s.name;$("sNote").textContent=s.artist;
+  $("sLink").href="https://www.youtube.com/watch?v="+s.id;
+  render();if(scroll)$("practice").scrollIntoView({behavior:"smooth"});
+}
+function ytId(u){const m=u.match(/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/|\/live\/)([A-Za-z0-9_-]{11})/)||u.match(/^([A-Za-z0-9_-]{11})$/);return m?m[1]:null}
+function create(){
+  const id=ytId($("fUrl").value.trim()),lyr=$("fLyr").value.trim();
+  if(!id){$("err").textContent="Please paste a valid YouTube link.";return}
+  if(lyr.split(/\s+/).length<12){$("err").textContent="Please paste the lyrics (at least a few lines).";return}
+  $("err").textContent="";
+  S.song={id,name:$("fName").value.trim()||"Untitled song",artist:$("fArtist").value.trim(),lyrics:lyr,h:hash(lyr)};
+  S.ans={};S.checked={};S.level="beginner";cache={};save();showSong(true);
+}
+
+["fUrl","fName","fArtist","fLyr"].forEach(id=>$(id).addEventListener("input",()=>{
+  S.draft={url:$("fUrl").value,name:$("fName").value,artist:$("fArtist").value,lyrics:$("fLyr").value};save()}));
+$("create").addEventListener("click",create);
+$("example").addEventListener("click",()=>{
+  $("fUrl").value="https://www.youtube.com/watch?v=ak7R0_8aKwI";$("fName").value="Twinkle, Twinkle, Little Star";$("fArtist").value="Traditional";
+  $("fLyr").value="Twinkle, twinkle, little star,\nHow I wonder what you are.\nUp above the world so high,\nLike a diamond in the sky.\nWhen the blazing sun is gone,\nWhen he nothing shines upon,\nThen you show your little light,\nTwinkle, twinkle all the night.";
+  create()});
+$("tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(!b||b.dataset.l===S.level)return;S.level=b.dataset.l;save();render()});
+$("lyrics").addEventListener("click",e=>{const b=e.target.closest(".opt");if(!b||S.checked[S.level])return;
+  (S.ans[S.level]=S.ans[S.level]||{})[b.dataset.i]=b.dataset.v;save();render()});
+$("check").addEventListener("click",()=>{S.checked[S.level]=!S.checked[S.level];save();render()});
+$("reset").addEventListener("click",()=>{if(!confirm("Clear your answers for this level?"))return;S.ans[S.level]={};S.checked[S.level]=false;save();render()});
+
+const d=S.draft||{};
+if(S.song&&!d.lyrics){$("fUrl").value="https://www.youtube.com/watch?v="+S.song.id;$("fName").value=S.song.name;$("fArtist").value=S.song.artist;$("fLyr").value=S.song.lyrics}
+else{$("fUrl").value=d.url||"";$("fName").value=d.name||"";$("fArtist").value=d.artist||"";$("fLyr").value=d.lyrics||""}
+showSong(false);
+</script>
+</body>
+</html>
